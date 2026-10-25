@@ -54,7 +54,7 @@ jobs:
           mkdir -p ~/rpmbuild/SOURCES
           tar czf ~/rpmbuild/SOURCES/gmk67-rgb-$VERSION.tar.gz \
               --exclude=./.git --transform "s,^\.,gmk67-rgb-$VERSION," .
-          rpmbuild -bb --undefine dist packaging/rpm/gmk67-rgb.spec
+          rpmbuild -bb packaging/rpm/gmk67-rgb.spec
           mkdir -p dist && cp ~/rpmbuild/RPMS/noarch/*.rpm dist/
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:

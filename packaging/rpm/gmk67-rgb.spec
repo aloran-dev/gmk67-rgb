@@ -1,6 +1,6 @@
 Name:           gmk67-rgb
 Version:        1.0.0
-Release:        1%{?dist}
+Release:        1
 Summary:        RGB lighting control for the Zuoya GMK67 keyboard
 License:        GPL-3.0-or-later
 URL:            https://github.com/aloran-dev/gmk67-rgb
