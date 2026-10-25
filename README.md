@@ -1,8 +1,8 @@
 # gmk67-rgb
 
-Tengo un Zuoya GMK67 y uso Linux. El programa para cambiarle las luces solo existe para Windows y OpenRGB no reconoce esta versión del teclado, así que me tocaba hacerlo todo con las combinaciones de Fn. Por eso salió esta app.
+El programa para cambiar el backlight del Zuoya GMK67 solo existe para Windows y OpenRGB no reconoce esta versión del teclado, así que por eso decidi vibecodear esta pequeña app.
 
-Es algo sencillito, hecho a base de vibecoding con Claude: eliges un efecto y un color, ajustas el brillo y la velocidad, y listo. Solo la he probado con mi teclado, así que si a ti algo no te funciona, abre un issue y lo vemos.
+La app busca ser sencilla, simplemente eliges un efecto y un color, ajustas el brillo y la velocidad, y listo. Solo la he probado con mi teclado, así que no esperes gran copatibilidad.
 
 ## Qué hace
 
