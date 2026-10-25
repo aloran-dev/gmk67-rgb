@@ -1,0 +1,7 @@
+#!/bin/sh
+# Recarga udev para que la regla se aplique sin desconectar el teclado.
+set -e
+if command -v udevadm >/dev/null 2>&1; then
+    udevadm control --reload-rules || true
+    udevadm trigger --subsystem-match=hidraw || true
+fi

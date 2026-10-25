@@ -1,0 +1,20 @@
+id: io.github.aloran_dev.Gmk67Rgb
+runtime: org.gnome.Platform
+runtime-version: '51'
+sdk: org.gnome.Sdk
+command: gmk67-rgb
+finish-args:
+  - --share=ipc
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --device=dri
+  # /dev/hidraw* del teclado; el acceso lo da la regla udev del sistema
+  - --device=all
+modules:
+  - name: gmk67-rgb
+    buildsystem: simple
+    build-commands:
+      - make install PREFIX=/app UDEVDIR=
+    sources:
+      - type: dir
+        path: ../..

@@ -19,6 +19,9 @@ import time
 from dataclasses import dataclass, field
 
 VID, PID = 0x05AC, 0x024F
+# Debe coincidir con 70-gmk67.rules; la app lo muestra si no hay permiso sobre el hidraw
+UDEV_RULE = ('SUBSYSTEM=="hidraw", ATTRS{idVendor}=="05ac", ATTRS{idProduct}=="024f", '
+             'ATTRS{manufacturer}=="hfd.cn", TAG+="uaccess"')
 PACKET_LEN = 64
 HEADER = 0x04
 CHECK_L, CHECK_H = 0xAA, 0x55

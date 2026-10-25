@@ -13,12 +13,18 @@ sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
 import gi
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
-from gi.repository import Adw, Gdk, GLib, Gtk
+from gi.repository import Adw, Gio, GLib, Gtk
 
 import gmk67
 from colorpicker import ColorPickerButton
 
-APP_ID = "dev.aloran.Gmk67Rgb"
+APP_ID = "io.github.aloran_dev.Gmk67Rgb"
+VERSION = "1.0.0"
+UDEV_COMMAND = (
+    "echo '" + gmk67.UDEV_RULE + "' | sudo tee /etc/udev/rules.d/70-gmk67.rules\n"
+    "sudo udevadm control --reload-rules\n"
+    "sudo udevadm trigger --subsystem-match=hidraw"
+)
 PRESETS = [(255, 0, 0), (255, 128, 0), (255, 255, 0), (0, 255, 0),
            (0, 255, 255), (0, 0, 255), (128, 0, 255), (255, 255, 255)]
 CONFIG_DIR = os.path.join(GLib.get_user_config_dir(), "gmk67-rgb")
@@ -85,6 +91,9 @@ class Window(Adw.ApplicationWindow):
         self.apply_btn = Gtk.Button(label="Aplicar", css_classes=["suggested-action"])
         self.apply_btn.connect("clicked", self.on_apply)
         header.pack_end(self.apply_btn)
+        menu = Gio.Menu()
+        menu.append("Acerca de GMK67", "app.about")
+        header.pack_start(Gtk.MenuButton(icon_name="open-menu-symbolic", menu_model=menu))
         view.add_top_bar(header)
 
         page = Adw.PreferencesPage()
@@ -239,7 +248,8 @@ class Window(Adw.ApplicationWindow):
             except gmk67.ProtocolError as e:
                 msg = str(e)
             except PermissionError:
-                msg = "Sin permiso sobre el teclado: instala la regla udev (install.sh)"
+                msg = None
+                GLib.idle_add(self.show_udev_help)
             except OSError as e:
                 msg = f"Error al hablar con el teclado: {e.strerror or e}"
             GLib.idle_add(self.done, msg)
@@ -248,12 +258,43 @@ class Window(Adw.ApplicationWindow):
 
     def done(self, msg):
         self.apply_btn.set_sensitive(True)
-        self.toasts.add_toast(Adw.Toast(title=msg, timeout=3))
+        if msg:
+            self.toasts.add_toast(Adw.Toast(title=msg, timeout=3))
+
+    def show_udev_help(self):
+        """Sin la regla udev el usuario no puede abrir el hidraw (siempre pasa en Flatpak)."""
+        view = Gtk.TextView(editable=False, monospace=True, wrap_mode=Gtk.WrapMode.CHAR,
+                            top_margin=8, bottom_margin=8, left_margin=8, right_margin=8,
+                            css_classes=["card"])
+        view.get_buffer().set_text(UDEV_COMMAND)
+        dialog = Adw.AlertDialog(
+            heading="Falta permiso para usar el teclado",
+            body="Ejecuta estos comandos en una terminal una sola vez. "
+                 "Dan acceso al teclado al usuario con sesión iniciada.",
+            extra_child=view)
+        dialog.add_response("copy", "Copiar comandos")
+        dialog.add_response("close", "Cerrar")
+        dialog.set_default_response("copy")
+        dialog.connect("response", lambda _d, r: r == "copy" and
+                       self.get_clipboard().set(UDEV_COMMAND))
+        dialog.present(self)
 
 
 class App(Adw.Application):
     def __init__(self):
         super().__init__(application_id=APP_ID)
+        about = Gio.SimpleAction.new("about", None)
+        about.connect("activate", self.on_about)
+        self.add_action(about)
+
+    def on_about(self, *_):
+        Adw.AboutDialog(
+            application_name="GMK67", application_icon=APP_ID, version=VERSION,
+            developer_name="Daniel Alvarez", license_type=Gtk.License.GPL_3_0,
+            comments="Control de las luces RGB del teclado Zuoya GMK67 (v1)",
+            website="https://github.com/aloran-dev/gmk67-rgb",
+            issue_url="https://github.com/aloran-dev/gmk67-rgb/issues",
+        ).present(self.get_active_window())
 
     def do_activate(self):
         win = self.get_active_window() or Window(self)

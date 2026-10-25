@@ -27,15 +27,26 @@ El GMK67 **v2** (`36b0:3068`) usa QMK/VIA y no necesita esto: funciona con [VIA]
 
 ## Instalación
 
-Necesitas Python 3, PyGObject, GTK 4 y libadwaita (en Ubuntu/Debian: `python3-gi gir1.2-gtk-4.0 gir1.2-adw-1`).
+Descarga el paquete de tu distribución desde [Releases](https://github.com/aloran-dev/gmk67-rgb/releases):
+
+| Distribución | Instalar |
+|---|---|
+| Ubuntu 24.04+, Debian 13+, Mint, Pop!_OS | `sudo apt install ./gmk67-rgb_*_all.deb` |
+| Fedora 39+ | `sudo dnf install ./gmk67-rgb-*.noarch.rpm` |
+| Cualquiera con Flatpak | `flatpak install --user gmk67-rgb-*.flatpak` |
+
+El `.deb` y el `.rpm` instalan una regla udev que da acceso al teclado al usuario de la sesión. Un Flatpak no puede instalar reglas en el sistema, así que con Flatpak hay que añadirla una vez a mano. La app muestra los comandos la primera vez que no puede acceder al teclado.
+
+### Desde el código fuente
+
+Necesitas Python 3, PyGObject, GTK 4.12+ y libadwaita 1.4+ (en Ubuntu/Debian: `python3-gi gir1.2-gtk-4.0 gir1.2-adw-1`).
 
 ```sh
 git clone https://github.com/aloran-dev/gmk67-rgb.git
 cd gmk67-rgb
-./install.sh
+./install.sh            # app en ~/.local + regla udev (pide sudo)
+./install.sh --uninstall
 ```
-
-`install.sh` pide `sudo` para instalar una regla udev que da acceso al teclado al usuario de la sesión (`/etc/udev/rules.d/70-gmk67.rules`). Además crea el lanzador **GMK67** en el menú de aplicaciones y el comando `gmk67-rgb`.
 
 ## Protocolo
 
