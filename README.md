@@ -1,12 +1,8 @@
 # gmk67-rgb
 
-Control de las luces RGB del teclado **Zuoya GMK67 (v1)** en Linux, con una app GTK4 + libadwaita.
+Tengo un Zuoya GMK67 y uso Linux. El programa para cambiarle las luces solo existe para Windows y OpenRGB no reconoce esta versión del teclado, así que me tocaba hacerlo todo con las combinaciones de Fn. Por eso salió esta app.
 
-*Linux RGB control for the Zuoya GMK67 (v1, `05ac:024f`, "hfd.cn USB DEVICE") keyboard. GTK4/libadwaita app plus a small Python module documenting the protocol.*
-
-> **Una app muy sencilla, hecha con vibecoding.** El software oficial del GMK67 solo existe para Windows y en Linux no hay soporte nativo: OpenRGB no reconoce esta versión del teclado. Esta app nace para cubrir ese hueco y hace lo justo para cambiar las luces. Se escribió con ayuda de IA (Claude) y se probó con un solo teclado, así que puede tener errores. Úsala bajo tu propia responsabilidad.
->
-> *A very simple, vibecoded app. The GMK67's official software is Windows-only and there's no native Linux support (OpenRGB doesn't recognize this revision). Written with AI assistance and tested on a single keyboard — use at your own risk.*
+Es algo sencillito, hecho a base de vibecoding con Claude: eliges un efecto y un color, ajustas el brillo y la velocidad, y listo. Solo la he probado con mi teclado, así que si a ti algo no te funciona, abre un issue y lo vemos.
 
 ## Qué hace
 
